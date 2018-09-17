@@ -181,6 +181,8 @@ void Parse(
 // doc/api/cli.md
 // TODO(addaleax): Make that unnecessary.
 
+template class EXPORT_TEMPLATE_DEFINE(NODE_EXTERN) OptionsParser<DebugOptions>;
+
 DebugOptionsParser::DebugOptionsParser() {
   AddOption("--inspect-port",
             "set host:port for inspector",

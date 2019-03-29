@@ -3541,12 +3541,15 @@ Local<String> KeyObject::GetAsymmetricKeyType() const {
     return env()->crypto_ec_string();
   case EVP_PKEY_ED25519:
     return env()->crypto_ed25519_string();
+  // FIXME(zcbenz): This is not available in BoringSSL.
+#if 0
   case EVP_PKEY_ED448:
     return env()->crypto_ed448_string();
   case EVP_PKEY_X25519:
     return env()->crypto_x25519_string();
   case EVP_PKEY_X448:
     return env()->crypto_x448_string();
+#endif
   default:
     CHECK(false);
   }
@@ -5774,6 +5777,8 @@ class DSAKeyPairGenerationConfig : public KeyPairGenerationConfig {
     if (EVP_PKEY_paramgen_init(param_ctx.get()) <= 0)
       return nullptr;
 
+    // FIXME(zcbenz): This is not available in BoringSSL.
+#if 0
     if (EVP_PKEY_CTX_set_dsa_paramgen_bits(param_ctx.get(), modulus_bits_) <= 0)
       return nullptr;
 
@@ -5793,6 +5798,8 @@ class DSAKeyPairGenerationConfig : public KeyPairGenerationConfig {
 
     EVPKeyCtxPointer key_ctx(EVP_PKEY_CTX_new(params.get(), nullptr));
     return key_ctx;
+#endif
+    return nullptr;
   }
 
  private:
@@ -6449,9 +6456,12 @@ void Initialize(Local<Object> target,
   env->SetMethod(target, "generateKeyPairEC", GenerateKeyPairEC);
   env->SetMethod(target, "generateKeyPairEdDSA", GenerateKeyPairEdDSA);
   NODE_DEFINE_CONSTANT(target, EVP_PKEY_ED25519);
+  // FIXME(zcbenz): This is not available in BoringSSL.
+#if 0
   NODE_DEFINE_CONSTANT(target, EVP_PKEY_ED448);
   NODE_DEFINE_CONSTANT(target, EVP_PKEY_X25519);
   NODE_DEFINE_CONSTANT(target, EVP_PKEY_X448);
+#endif
   NODE_DEFINE_CONSTANT(target, OPENSSL_EC_NAMED_CURVE);
   NODE_DEFINE_CONSTANT(target, OPENSSL_EC_EXPLICIT_CURVE);
   NODE_DEFINE_CONSTANT(target, kKeyEncodingPKCS1);

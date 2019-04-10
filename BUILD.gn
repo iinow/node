@@ -200,7 +200,8 @@ config("node_internal_config") {
 component("node_lib") {
   deps = [
     ":node_js2c",
-    "deps/brotli",
+    "//third_party/brotli:enc",
+    "//third_party/brotli:dec",
     "deps/cares",
     "deps/histogram",
     "deps/http_parser",
